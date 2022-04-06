@@ -41,3 +41,4 @@ function calc_inss(float $sal_bruto)
 		}
 	}
 }
+
