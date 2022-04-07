@@ -26,7 +26,6 @@ function calc_inss(float $sal_bruto)
 	$faixa4 = 7087.22;
 	$teto =  828.39;
 
-	return $teto;
 	if ($sal_bruto > $faixa4) {
 		return $teto;
 	} else {
@@ -42,3 +41,34 @@ function calc_inss(float $sal_bruto)
 	}
 }
 
+function calc_aliquota_simples($rtb12)
+{
+
+	$faixa1 = 180000;
+	$faixa2 = 360000;
+	$faixa3 = 720000;
+	$faixa4 = 1800000;
+	$faixa5 = 3600000;
+	$faixa6 = 4800000;
+
+	if ($rtb12 > $faixa6) {
+		echo "Bonitão, sua empresa não se enquadra no Simples Nacional! Volte 2 casas";
+	} else if ($rtb12 <= $faixa1) {
+		return $rtb12 * 0.155 / $rtb12;
+	} else if ($rtb12 <= $faixa2) {
+		return ( $rtb12 * 0.18 - 4500 ) / $rtb12;
+	} else if ($rtb12 <= $faixa3) {
+		return $rtb12 * 0.195 - 9900 / $rtb12;
+	} else if ($rtb12 <= $faixa4) {
+		return ( $rtb12 * 0.205 - 17100 ) / $rtb12;
+	} else if ($rtb12 <= $faixa5) {
+		return $rtb12 * 0.23 - 62100 / $rtb12;
+	} else if ($rtb12 <= $faixa6) {
+		return ( $rtb12 * 0.305 - 540000 ) / $rtb12;
+	}
+}
+
+function calc_das_simples($faturamento_mensal, $aliquota_efetiva)
+{
+	return $faturamento_mensal * $aliquota_efetiva;
+}
