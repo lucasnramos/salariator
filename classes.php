@@ -13,44 +13,35 @@ class Faixa
 		$this->valor_min = $valor_min;
 		$this->valor_max = $valor_max;
 	}
-
-	function get_salario_calculado(float $sal_bruto)
-	{
-		return ($sal_bruto * $this->aliquota) - $this->deducao;
-	}
 }
 
 class FaixaIrrf extends Faixa
 {
 	public float $deducao_dependente;
-
-	public function calcuar_irrf(float $sal_base)
-	{
-		$sal_calculo = $this->get_sal_base_irrf($sal_base);
-		return $this->get_salario_calculado($sal_calculo);
-	}
-
-	private function get_sal_base_irrf(float $sal_base)
-	{
-		return $sal_base - $this->dependentes * $this->deducao_dependente;
-	}
 }
 
-class FaixaInss extends Faixa
+class PessoaFisicaMensal
 {
-	public function calc_inss($sal_bruto)
+	public $valor_inss;
+	public $valor_fgts;
+	public $valor_irrf;
+	public $porcentagem_inss;
+	public $porcentagem_irrf;
+	public $salario_bruto;
+	public $salario_base_irrf;
+	public $salario_liquido;
+}
+
+class PessoaJuridicaMensal
+{
+	public $faturamento;
+	public $rtb12;
+	public $aliquota_efetiva;
+	public $valor_das_simples;
+	public $pro_labore;
+
+	function __construct()
 	{
-		return ($sal_bruto * $this->aliquota) - $this->deducao;
+		$this->pro_labore = new PessoaFisicaMensal();
 	}
 }
-
-class Salario
-{
-	public int $dependentes;
-	public float $valor_bruto;
-	public float $valor_liquido;
-	public float $beneficios;
-	public float $descontos;
-	public float $dedutiveis;
-}
-
