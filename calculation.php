@@ -8,7 +8,7 @@ function calc_irrf(float $sal_base_ir)
 	if ($sal_base_ir <= $faixa1) {
 		return 0;
 	} else if ($sal_base_ir <= $faixa2) {
-		return ($sal_base_ir * 0.75) - 142.8;
+		return ($sal_base_ir * 0.075) - 142.8;
 	} else if ($sal_base_ir <= $faixa3) {
 		return ($sal_base_ir * 0.15) - 354.80;
 	} else if ($sal_base_ir <= $faixa4) {
