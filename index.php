@@ -1,9 +1,5 @@
 <?php
-include 'calculation.php';
-include 'classes.php';
-
-$pessoa_fisica = new PessoaFisicaMensal();
-$pessoa_juridica = new PessoaJuridicaMensal();
+require_once 'classes.php';
 
 if (isset($_POST['submit'])) {
   $$sal_bruto = htmlspecialchars($_POST['sal_bruto']);
@@ -11,31 +7,19 @@ if (isset($_POST['submit'])) {
   $outros_descontos = htmlspecialchars($_POST['outros_descontos']);
   $outros_beneficios = htmlspecialchars($_POST['outros_beneficios']);
   $faturamento_mensal = htmlspecialchars($_POST['faturamento_mensal']);
-  $pro_labore = htmlspecialchars($_POST['pro_labore']);
   if ($_POST['rtb12'] == '') {
     $rtb12 = $faturamento_mensal * 12;
   } else {
     $rtb12 = htmlspecialchars($_POST['rtb12']);
   }
+  if ($_POST['pro_labore'] == '') {
+    $pro_labore = $faturamento_mensal * 0.28;
+  } else {
+    $pro_labore = htmlspecialchars($_POST['pro_labore']);
+  }
 
-  // PF
-  $pessoa_fisica->salario_bruto = $sal_bruto;
-  $inss_calc = calc_inss($sal_bruto);
-  $sal_base_ir = $sal_bruto - $inss_calc - (189.59 * $dependentes);
-  $irrf_calc = calc_irrf($sal_base_ir);
-  $fgts_mensal = $sal_bruto * 0.08;
-  $sal_liquido = $sal_bruto - $inss_calc - $irrf_calc - $outros_descontos  + $outros_beneficios;
-  $perc_efetiva_inss = $inss_calc / $sal_bruto * 100;
-  $perc_efetiva_irrf = $irrf_calc / $sal_bruto * 100;
-
-  // PJ
-  $aliquota_efetiva = calc_aliquota_simples($rtb12);
-  $das_simples = calc_das_simples($faturamento_mensal, $aliquota_efetiva);
-  $receita = $faturamento_mensal - $das_simples - $pro_labore;
-  $inss_pro_labore = calc_inss($pro_labore);
-  $base_ir_pro_labore = $pro_labore - $inss_pro_labore - (189.59 * $dependentes);
-  $irrf_pro_labore = calc_irrf($base_ir_pro_labore);
-  $sal_socio = $pro_labore - $inss_pro_labore - $irrf_pro_labore;
+  $pessoa_fisica = new PessoaFisicaMensal($sal_bruto, $dependentes);
+  $pessoa_juridica = new PessoaJuridicaMensal($faturamento_mensal, $rtb12, $pro_labore);
 }
 ?>
 
@@ -190,41 +174,58 @@ if (isset($_POST['submit'])) {
     <input type="text" name="rtb12" />
     <p>Caso seja empresa nova, coloque o mesmo valor do Faturamento Mensal</p>
 
+    <label for="usar_fator_r">Utilizar Fator R</label>
+    <input type="checkbox" name="usar_fator_r" value="true" />
+
     <label for="pro_labore">Pro-labore</label>
     <input type="text" name="pro_labore" />
 
     <input type="submit" name="submit" value="Calcular">
   </form>
 
-  <div class="d-row">
-    <div>
-      <h3>Resultados CLT</h3>
-      <p>Salário Bruto Mensal: <?= $pessoa_fisica->salario_bruto ?></p>
-      <p>Base IR: <?= $pessoa_fisica->salario_base_irrf ?></p>
-      <p>INSS Calculado: <?= $pessoa_fisica->valor_inss ?></p>
-      <p>IRRF Calculado: <?= $pessoa_fisica->valor_irrf ?></p>
-      <p>Aliquota efetiva do INSS: <?= $pessoa_fisica->porcentagem_inss ?> %</p>
-      <p>Aliquota efetiva do IRRF: <?= $pessoa_fisica->porcentagem_irrf ?> %</p>
-      <p>FGTS Mensal: <?= $pessoa_fisica->valor_fgts ?></p>
-      <p>Salário Mensal Líquido: <?= $pessoa_fisica->salario_liquido ?></p>
-      <p>Salário Mensal Líquido + FGTS: <?= $pessoa_fisica->salario_liquido + $pessoa_fisica->valor_fgts ?></p>
+  <?php if (isset($_POST['submit'])) : ?>
+    <div class="d-row">
+      <div>
+        <h3>Resultados CLT</h3>
+        <p>Salário Bruto Mensal: <?= $pessoa_fisica->get_salario_bruto() ?></p>
+        <p>Base IR: <?= $pessoa_fisica->get_salario_base_irrf() ?></p>
+        <p>INSS Calculado: <?= $pessoa_fisica->get_valor_inss() ?></p>
+        <p>IRRF Calculado: <?= $pessoa_fisica->get_valor_irrf() ?></p>
+        <p>Aliquota efetiva do INSS: <?= $pessoa_fisica->get_porcentagem_inss() ?> %</p>
+        <p>Aliquota efetiva do IRRF: <?= $pessoa_fisica->get_porcentagem_irrf() ?> %</p>
+        <p>FGTS Mensal: <?= $pessoa_fisica->get_valor_fgts() ?></p>
+        <p>Salário Mensal Líquido: <?= $pessoa_fisica->get_salario_liquido() ?></p>
+        <p>Salário Mensal Líquido + FGTS: <?= $pessoa_fisica->get_salario_liquido() + $pessoa_fisica->get_valor_fgts() ?></p>
+      </div>
+      <div>
+        <h3>Resultados Simples - Anexo V sem Fator R</h3>
+        <p>Faturamento Mensal: <?= $pessoa_juridica->get_faturamento() ?></p>
+        <p>Alíquota Efetiva para o Mês: <?= $pessoa_juridica->get_aliquota_efetiva() * 100 ?> %</p>
+        <p>Valor DAS: <?= $pessoa_juridica->get_valor_das_simples() ?></p>
+        <p>Receita: <?= $pessoa_juridica->get_receita() ?></p>
+
+        <p>Pro-labore: <?= $pessoa_juridica->get_pro_labore() ?></p>
+        <p>INSS: <?= $pessoa_juridica->pro_labore->get_valor_inss() ?></p>
+        <p>IRRF: <?= $pessoa_juridica->pro_labore->get_valor_irrf() ?></p>
+        <p>Salario Liquido: <?= $pessoa_juridica->pro_labore->get_salario_liquido() ?></p>
+      </div>
     </div>
     <div>
-      <h3>Resultados Simples - Anexo V sem Fator R</h3>
-      <p>Faturamento Mensal: <?= $pessoa_juridica ?></p>
-      <p>Alíquota Efetiva para o Mês: <?= $pessoa_juridica ?> %</p>
-      <p>Valor DAS: <?= $pessoa_juridica ?></p>
-      <p>Receita: <?= $pessoa_juridica ?></p>
+      <h3>Resultados Simples - Anexo III Pelo Fator R</h3>
+      <p>Faturamento Mensal: <?= $pessoa_juridica->get_faturamento() ?></p>
+      <p>Alíquota Efetiva para o Mês: <?= $pessoa_juridica->get_aliquota_efetiva() * 100 ?> %</p>
+      <p>Valor DAS: <?= $pessoa_juridica->get_valor_das_simples() ?></p>
+      <p>Receita: <?= $pessoa_juridica->get_receita() ?></p>
 
-      <p>Pro-labore: <?= $pessoa_juridica ?></p>
-      <p>INSS: <?= $pessoa_juridica ?></p>
-      <p>IRRF: <?= $pessoa_juridica ?></p>
-      <p>Salario Liquido: <?= $pessoa_juridica ?></p>
-      <p>Receita Real: <?= $pessoa_juridica ?></p>
+      <p>Pro-labore: <?= $pessoa_juridica->get_pro_labore() ?></p>
+      <p>INSS: <?= $pessoa_juridica->pro_labore->get_valor_inss() ?></p>
+      <p>IRRF: <?= $pessoa_juridica->pro_labore->get_valor_irrf() ?></p>
+      <p>Salario Liquido: <?= $pessoa_juridica->pro_labore->get_salario_liquido() ?></p>
     </div>
-  </div>
+    </div>
 
-  ISS e COFINS não paga para quem exporta serviços
+    ISS e COFINS não paga para quem exporta serviços
+  <?php endif; ?>
 </body>
 
 </html>

@@ -8,7 +8,7 @@ function calc_irrf(float $sal_base_ir)
 	if ($sal_base_ir <= $faixa1) {
 		return 0;
 	} else if ($sal_base_ir <= $faixa2) {
-		return ($sal_base_ir * 0.75) - 142.8;
+		return ($sal_base_ir * 0.075) - 142.8;
 	} else if ($sal_base_ir <= $faixa3) {
 		return ($sal_base_ir * 0.15) - 354.80;
 	} else if ($sal_base_ir <= $faixa4) {
@@ -38,6 +38,32 @@ function calc_inss(float $sal_bruto)
 		} else if ($sal_bruto <= $faixa4) {
 			return ($sal_bruto * 0.14) - 163.82;
 		}
+	}
+}
+
+function calc_aliquota_simples_fator_r($rtb12)
+{
+	$faixa1 = 180000;
+	$faixa2 = 360000;
+	$faixa3 = 720000;
+	$faixa4 = 1800000;
+	$faixa5 = 3600000;
+	$faixa6 = 4800000;
+
+	if ($rtb12 > $faixa6) {
+		echo "Bonitão, sua empresa não se enquadra no Simples Nacional! Volte 2 casas";
+	} else if ($rtb12 <= $faixa1) {
+		return $rtb12 * 0.06 / $rtb12;
+	} else if ($rtb12 <= $faixa2) {
+		return ( $rtb12 * 0.112 - 9360 ) / $rtb12;
+	} else if ($rtb12 <= $faixa3) {
+		return $rtb12 * 0.135 - 17640 / $rtb12;
+	} else if ($rtb12 <= $faixa4) {
+		return ( $rtb12 * 0.16 - 35640 ) / $rtb12;
+	} else if ($rtb12 <= $faixa5) {
+		return $rtb12 * 0.21 - 125640 / $rtb12;
+	} else if ($rtb12 <= $faixa6) {
+		return ( $rtb12 * 0.33 - 648000 ) / $rtb12;
 	}
 }
 
