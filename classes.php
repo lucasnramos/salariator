@@ -3,10 +3,10 @@ require_once 'calculation.php';
 
 class Faixa
 {
-	protected float $aliquota;
-	protected float $deducao;
-	protected float $valor_min;
-	protected float $valor_max;
+	protected $aliquota;
+	protected $deducao;
+	protected $valor_min;
+	protected $valor_max;
 
 	function __construct($aliquota, $deducao, $valor_min, $valor_max)
 	{
@@ -19,7 +19,7 @@ class Faixa
 
 class FaixaIrrf extends Faixa
 {
-	public float $deducao_dependente;
+	public $deducao_dependente;
 }
 
 class PessoaFisicaMensal
@@ -77,15 +77,25 @@ class PessoaFisicaMensal
 
 class PessoaJuridicaMensal
 {
-	private float $faturamento;
-	private float $rtb12;
-	private PessoaFisicaMensal $pro_labore;
+	private $faturamento;
+	private $rtb12;
+	public $pro_labore;
+	private $usar_fator_r;
 
 	function __construct($faturamento, $rtb12, $pro_labore)
 	{
 		$this->faturamento = $faturamento;
 		$this->rtb12 = $rtb12;
 		$this->pro_labore = new PessoaFisicaMensal($pro_labore);
+
+		if ($this->check_fator_r())
+		{
+			$this->usar_fator_r = true;
+		} else {
+			$this->usar_fator_r = false;
+		}
+
+		echo "$this->usar_fator_r";
 	}
 
 	public function get_faturamento()
@@ -95,7 +105,11 @@ class PessoaJuridicaMensal
 
 	public function get_aliquota_efetiva()
 	{
-		return calc_aliquota_simples($this->rtb12);
+		if ($this->usar_fator_r) {
+			return calc_aliquota_simples_fator_r($this->rtb12);
+		} else {
+			return calc_aliquota_simples($this->rtb12);
+		}
 	}
 	public function get_valor_das_simples()
 	{
@@ -105,11 +119,16 @@ class PessoaJuridicaMensal
 
 	public function get_pro_labore()
 	{
-		return $this->pro_labore;
+		return $this->pro_labore->get_salario_bruto();
 	}
 
 	public function get_receita()
 	{
 		return $this->faturamento - $this->get_valor_das_simples();
+	}
+
+	private function check_fator_r()
+	{
+		return $this->pro_labore->get_salario_bruto() >= $this->faturamento * 0.28;
 	}
 }
