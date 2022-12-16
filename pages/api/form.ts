@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { clt, cnpj } from "../../services/calculation";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log("method ->", req.method);
   if ((req.method = "GET")) {
     res.status(400);
   }

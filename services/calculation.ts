@@ -1,4 +1,9 @@
 import { calculeFgts, calculeInss, calculeIrrf } from "./calculateClt";
+import {
+  calculeAliquotaFatorR,
+  calculeAliquotaSimples,
+  calculeDasSimples,
+} from "./calculateCnpj";
 
 type SalarioCltMensal = {
   salarioBruto: number;
@@ -12,7 +17,7 @@ type SalarioCltMensal = {
 };
 
 type SimplesNacionalMensal = {
-  faturamento: number;
+  faturamentoMensal: number;
   aliquotaEfetiva: number;
   das: number;
   receita: number;
@@ -30,7 +35,7 @@ type CnpjFormData = {
   faturamentoMensal: string;
   rtb12: string;
   usarFatorR: string;
-  proLabore: string;
+  proLabore: CltFormData;
 };
 
 function clt({
@@ -63,7 +68,19 @@ function clt({
 }
 
 function cnpj(formData: CnpjFormData): SimplesNacionalMensal {
-  return {} as SimplesNacionalMensal;
+  const { usarFatorR } = formData;
+  const faturamentoMensal = parseFloat(formData.faturamentoMensal);
+  const rtb12 = parseFloat(formData.rtb12);
+  const aliquotaEfetiva = usarFatorR
+    ? calculeAliquotaFatorR(rtb12)
+    : calculeAliquotaSimples(rtb12);
+
+  return {
+    faturamentoMensal,
+    aliquotaEfetiva,
+    das: calculeDasSimples(faturamentoMensal, aliquotaEfetiva),
+    proLabore: clt(formData.proLabore),
+  } as SimplesNacionalMensal;
 }
 
 export { clt, cnpj };
