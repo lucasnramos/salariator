@@ -1,7 +1,11 @@
 import React, { FormEvent } from "react";
 import FormInput, { FormInputProps } from "./FormInput";
 
-function Form() {
+type FormProps = {
+	handleSubmit: (event: any) => void
+}
+
+function Form({ handleSubmit }: FormProps) {
 	const cltFormInputs: FormInputProps[] = [
 		{
 			name: "salarioBrutoMensal",
@@ -49,7 +53,7 @@ function Form() {
 	];
 
 	return (
-		<form className="my-5" action="/api/form" method="post">
+		<form className="my-5" onSubmit={handleSubmit}>
 			<div className="flex">
 				<div className='mr-4 flex-grow'>
 					<h2 className="mt-6 mb-4">Dados CLT</h2>
