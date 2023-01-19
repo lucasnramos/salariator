@@ -5,7 +5,7 @@ import {
   calculeDasSimples,
 } from "./calculateCnpj";
 
-type SalarioCltMensal = {
+export type SalarioCltMensal = {
   salarioBruto: number;
   fgts: number;
   salarioBaseIrrf?: number;
@@ -16,7 +16,7 @@ type SalarioCltMensal = {
   salarioLiquido: number;
 };
 
-type SimplesNacionalMensal = {
+export type SimplesNacionalMensal = {
   faturamentoMensal: number;
   aliquotaEfetiva: number;
   das: number;
@@ -24,18 +24,16 @@ type SimplesNacionalMensal = {
   proLabore: SalarioCltMensal;
 };
 
-type CltFormData = {
+type FormData = {
   salarioBrutoMensal: string;
   numDependentes: string;
   totalBeneficios: string;
   totalDescontos: string;
-};
-
-type CnpjFormData = {
   faturamentoMensal: string;
-  rtb12: string;
-  usarFatorR: string;
-  proLabore: CltFormData;
+  despesas: string;
+  rbt12: string;
+  usarFatorR?: string;
+  proLabore: string;
 };
 
 function clt({
@@ -43,7 +41,7 @@ function clt({
   numDependentes,
   totalBeneficios,
   totalDescontos,
-}: CltFormData): SalarioCltMensal {
+}: FormData): SalarioCltMensal {
   const salarioBruto = parseFloat(salarioBrutoMensal);
   const qtdeDependentes = parseInt(numDependentes);
   const fgts = calculeFgts(salarioBruto);
@@ -61,25 +59,31 @@ function clt({
     fgts,
     inss,
     irrf,
-    porcentagemInss: (irrf / salarioBruto) * 100,
-    porcentagemIrrf: (inss / salarioBruto) * 100,
+    porcentagemInss: inss / salarioBruto,
+    porcentagemIrrf: irrf / salarioBruto,
     salarioLiquido,
   };
 }
 
-function cnpj(formData: CnpjFormData): SimplesNacionalMensal {
-  const { usarFatorR } = formData;
+function cnpj(formData: FormData): SimplesNacionalMensal {
+  console.log("formdata?", formData);
   const faturamentoMensal = parseFloat(formData.faturamentoMensal);
-  const rtb12 = parseFloat(formData.rtb12);
-  const aliquotaEfetiva = usarFatorR
-    ? calculeAliquotaFatorR(rtb12)
-    : calculeAliquotaSimples(rtb12);
+  const rbt12 = parseFloat(formData.rbt12);
+  const despesas = parseFloat(formData.despesas);
+  const aliquotaEfetiva = calculeAliquotaSimples(rbt12);
+  const das = calculeDasSimples(faturamentoMensal, aliquotaEfetiva);
 
   return {
     faturamentoMensal,
     aliquotaEfetiva,
-    das: calculeDasSimples(faturamentoMensal, aliquotaEfetiva),
-    proLabore: clt(formData.proLabore),
+    das,
+    proLabore: clt({
+      ...formData,
+      salarioBrutoMensal: formData.proLabore,
+      totalBeneficios: "0",
+      totalDescontos: "0"
+    }),
+    receita: faturamentoMensal - das - despesas,
   } as SimplesNacionalMensal;
 }
 

@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { FormEvent, useReducer, useState } from 'react';
 import Form from '../components/Form'
+import Results from '../components/Results';
 import styles from '../styles/Home.module.css'
 
 function getFormValue(eventTarget: HTMLInputElement[]) {
@@ -45,7 +46,7 @@ export default function Home() {
           Salariator - Compare salários CLT e PJ
         </h1>
         <Form handleSubmit={processSalaries} />
-        {JSON.stringify(results)}
+        <Results data={results} />
       </main>
 
       <footer className={styles.footer}>

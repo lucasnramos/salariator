@@ -7,10 +7,10 @@ if (isset($_POST['submit'])) {
   $outros_descontos = htmlspecialchars($_POST['outros_descontos']);
   $outros_beneficios = htmlspecialchars($_POST['outros_beneficios']);
   $faturamento_mensal = htmlspecialchars($_POST['faturamento_mensal']);
-  if ($_POST['rtb12'] == '') {
-    $rtb12 = $faturamento_mensal * 12;
+  if ($_POST['rbt12'] == '') {
+    $rbt12 = $faturamento_mensal * 12;
   } else {
-    $rtb12 = htmlspecialchars($_POST['rtb12']);
+    $rbt12 = htmlspecialchars($_POST['rbt12']);
   }
   if ($_POST['pro_labore'] == '') {
     $pro_labore = $faturamento_mensal * 0.28;
@@ -19,7 +19,7 @@ if (isset($_POST['submit'])) {
   }
 
   $pessoa_fisica = new PessoaFisicaMensal($sal_bruto, $dependentes);
-  $pessoa_juridica = new PessoaJuridicaMensal($faturamento_mensal, $rtb12, $pro_labore);
+  $pessoa_juridica = new PessoaJuridicaMensal($faturamento_mensal, $rbt12, $pro_labore);
 }
 ?>
 
@@ -170,8 +170,8 @@ if (isset($_POST['submit'])) {
     <label for="faturamento_mensal">Faturamento do último mês</label>
     <input type="text" name="faturamento_mensal" />
 
-    <label for="rtb12">Receita Bruta dos últimos 12 meses (RTB12)</label>
-    <input type="text" name="rtb12" />
+    <label for="rbt12">Receita Bruta dos últimos 12 meses (RBT12)</label>
+    <input type="text" name="rbt12" />
     <p>Caso seja empresa nova, coloque o mesmo valor do Faturamento Mensal</p>
 
     <label for="usar_fator_r">Utilizar Fator R</label>

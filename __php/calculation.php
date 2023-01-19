@@ -41,7 +41,7 @@ function calc_inss(float $sal_bruto)
 	}
 }
 
-function calc_aliquota_simples_fator_r($rtb12)
+function calc_aliquota_simples_fator_r($rbt12)
 {
 	$faixa1 = 180000;
 	$faixa2 = 360000;
@@ -50,24 +50,24 @@ function calc_aliquota_simples_fator_r($rtb12)
 	$faixa5 = 3600000;
 	$faixa6 = 4800000;
 
-	if ($rtb12 > $faixa6) {
+	if ($rbt12 > $faixa6) {
 		echo "Bonitão, sua empresa não se enquadra no Simples Nacional! Volte 2 casas";
-	} else if ($rtb12 <= $faixa1) {
-		return $rtb12 * 0.06 / $rtb12;
-	} else if ($rtb12 <= $faixa2) {
-		return ( $rtb12 * 0.112 - 9360 ) / $rtb12;
-	} else if ($rtb12 <= $faixa3) {
-		return $rtb12 * 0.135 - 17640 / $rtb12;
-	} else if ($rtb12 <= $faixa4) {
-		return ( $rtb12 * 0.16 - 35640 ) / $rtb12;
-	} else if ($rtb12 <= $faixa5) {
-		return $rtb12 * 0.21 - 125640 / $rtb12;
-	} else if ($rtb12 <= $faixa6) {
-		return ( $rtb12 * 0.33 - 648000 ) / $rtb12;
+	} else if ($rbt12 <= $faixa1) {
+		return $rbt12 * 0.06 / $rbt12;
+	} else if ($rbt12 <= $faixa2) {
+		return ( $rbt12 * 0.112 - 9360 ) / $rbt12;
+	} else if ($rbt12 <= $faixa3) {
+		return $rbt12 * 0.135 - 17640 / $rbt12;
+	} else if ($rbt12 <= $faixa4) {
+		return ( $rbt12 * 0.16 - 35640 ) / $rbt12;
+	} else if ($rbt12 <= $faixa5) {
+		return $rbt12 * 0.21 - 125640 / $rbt12;
+	} else if ($rbt12 <= $faixa6) {
+		return ( $rbt12 * 0.33 - 648000 ) / $rbt12;
 	}
 }
 
-function calc_aliquota_simples($rtb12)
+function calc_aliquota_simples($rbt12)
 {
 
 	$faixa1 = 180000;
@@ -77,20 +77,20 @@ function calc_aliquota_simples($rtb12)
 	$faixa5 = 3600000;
 	$faixa6 = 4800000;
 
-	if ($rtb12 > $faixa6) {
+	if ($rbt12 > $faixa6) {
 		echo "Bonitão, sua empresa não se enquadra no Simples Nacional! Volte 2 casas";
-	} else if ($rtb12 <= $faixa1) {
-		return $rtb12 * 0.155 / $rtb12;
-	} else if ($rtb12 <= $faixa2) {
-		return ( $rtb12 * 0.18 - 4500 ) / $rtb12;
-	} else if ($rtb12 <= $faixa3) {
-		return $rtb12 * 0.195 - 9900 / $rtb12;
-	} else if ($rtb12 <= $faixa4) {
-		return ( $rtb12 * 0.205 - 17100 ) / $rtb12;
-	} else if ($rtb12 <= $faixa5) {
-		return $rtb12 * 0.23 - 62100 / $rtb12;
-	} else if ($rtb12 <= $faixa6) {
-		return ( $rtb12 * 0.305 - 540000 ) / $rtb12;
+	} else if ($rbt12 <= $faixa1) {
+		return $rbt12 * 0.155 / $rbt12;
+	} else if ($rbt12 <= $faixa2) {
+		return ( $rbt12 * 0.18 - 4500 ) / $rbt12;
+	} else if ($rbt12 <= $faixa3) {
+		return $rbt12 * 0.195 - 9900 / $rbt12;
+	} else if ($rbt12 <= $faixa4) {
+		return ( $rbt12 * 0.205 - 17100 ) / $rbt12;
+	} else if ($rbt12 <= $faixa5) {
+		return $rbt12 * 0.23 - 62100 / $rbt12;
+	} else if ($rbt12 <= $faixa6) {
+		return ( $rbt12 * 0.305 - 540000 ) / $rbt12;
 	}
 }
 

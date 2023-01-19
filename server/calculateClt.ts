@@ -15,6 +15,9 @@ function calculeIrrf({ salarioBruto, qtdeDependentes }: SalarioBase): number {
   const faixa3 = 3751.05;
   const faixa4 = 4664.68;
 
+  if (salarioBruto < faixa1) 
+    return 0
+
   if (salarioBase > faixa1 && salarioBase <= faixa2) {
     return salarioBase * 0.075 - 142.8;
   } else if (salarioBase <= faixa3) {

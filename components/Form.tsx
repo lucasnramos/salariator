@@ -36,14 +36,14 @@ function Form({ handleSubmit }: FormProps) {
 			required: true
 		},
 		{
-			name: "rtb12",
-			label: "Receita Bruta dos últimos 12 meses (RTB12)",
+			name: "despesas",
+			label: "Despesas totais",
 			required: true
 		},
 		{
-			name: "usarFatorR",
-			label: "Utilizar Fator R",
-			type: "checkbox",
+			name: "rbt12",
+			label: "Receita Bruta dos últimos 12 meses (RBT12)",
+			required: true
 		},
 		{
 			name: "proLabore",
