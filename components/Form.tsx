@@ -1,7 +1,11 @@
 import React, { FormEvent } from "react";
 import FormInput, { FormInputProps } from "./FormInput";
 
-function Form() {
+type FormProps = {
+	handleSubmit: (event: any) => void
+}
+
+function Form({ handleSubmit }: FormProps) {
 	const cltFormInputs: FormInputProps[] = [
 		{
 			name: "salarioBrutoMensal",
@@ -32,14 +36,14 @@ function Form() {
 			required: true
 		},
 		{
-			name: "rtb12",
-			label: "Receita Bruta dos últimos 12 meses (RTB12)",
+			name: "despesas",
+			label: "Despesas totais",
 			required: true
 		},
 		{
-			name: "usarFatorR",
-			label: "Utilizar Fator R",
-			type: "checkbox",
+			name: "rbt12",
+			label: "Receita Bruta dos últimos 12 meses (RBT12)",
+			required: true
 		},
 		{
 			name: "proLabore",
@@ -49,7 +53,7 @@ function Form() {
 	];
 
 	return (
-		<form className="my-5" action="/api/form" method="post">
+		<form className="my-5" onSubmit={handleSubmit}>
 			<div className="flex">
 				<div className='mr-4 flex-grow'>
 					<h2 className="mt-6 mb-4">Dados CLT</h2>

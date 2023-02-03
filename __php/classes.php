@@ -78,14 +78,14 @@ class PessoaFisicaMensal
 class PessoaJuridicaMensal
 {
 	private $faturamento;
-	private $rtb12;
+	private $rbt12;
 	public $pro_labore;
 	private $usar_fator_r;
 
-	function __construct($faturamento, $rtb12, $pro_labore)
+	function __construct($faturamento, $rbt12, $pro_labore)
 	{
 		$this->faturamento = $faturamento;
-		$this->rtb12 = $rtb12;
+		$this->rbt12 = $rbt12;
 		$this->pro_labore = new PessoaFisicaMensal($pro_labore);
 
 		if ($this->check_fator_r())
@@ -106,9 +106,9 @@ class PessoaJuridicaMensal
 	public function get_aliquota_efetiva()
 	{
 		if ($this->usar_fator_r) {
-			return calc_aliquota_simples_fator_r($this->rtb12);
+			return calc_aliquota_simples_fator_r($this->rbt12);
 		} else {
-			return calc_aliquota_simples($this->rtb12);
+			return calc_aliquota_simples($this->rbt12);
 		}
 	}
 	public function get_valor_das_simples()
