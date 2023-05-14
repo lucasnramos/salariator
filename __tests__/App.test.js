@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import Home from "../pages/index";
 import FormInput from "../components/FormInput";
 import "@testing-library/jest-dom";
+import { clt } from "../server/calculation";
 
 test("should show title", () => {
   render(<Home />);
