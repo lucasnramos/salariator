@@ -1,8 +1,11 @@
 export type SalarioBase = {
   salarioBruto: number;
-  qtdeDependentes: number;
+  qtdeDependentes?: number;
 };
-function calculeSalarioBase({ salarioBruto, qtdeDependentes }: SalarioBase) {
+function calculeSalarioBase({
+  salarioBruto,
+  qtdeDependentes = 0,
+}: SalarioBase) {
   const DESCONTO_POR_DEPENDENTE = 189.59;
   const valorInss = calculeInss(salarioBruto);
   return salarioBruto - valorInss - qtdeDependentes * DESCONTO_POR_DEPENDENTE;
@@ -15,8 +18,7 @@ function calculeIrrf({ salarioBruto, qtdeDependentes }: SalarioBase): number {
   const faixa3 = 3751.05;
   const faixa4 = 4664.68;
 
-  if (salarioBruto < faixa1) 
-    return 0
+  if (salarioBruto < faixa1) return 0;
 
   if (salarioBase > faixa1 && salarioBase <= faixa2) {
     return salarioBase * 0.075 - 142.8;
