@@ -13,18 +13,13 @@ function Form({ handleSubmit }: FormProps) {
 			required: true
 		},
 		{
-			name: "numDependentes",
-			label: "Num. Dependentes",
-			required: true
-		},
-		{
 			name: "totalBeneficios",
-			label: "Outros Benefícios",
+			label: "Benefícios",
 			required: true
 		},
 		{
 			name: "totalDescontos",
-			label: "Outros Descontos",
+			label: "Descontos",
 			required: true
 		},
 	];
@@ -38,11 +33,6 @@ function Form({ handleSubmit }: FormProps) {
 		{
 			name: "despesas",
 			label: "Despesas totais",
-			required: true
-		},
-		{
-			name: "rbt12",
-			label: "Receita Bruta dos últimos 12 meses (RBT12)",
 			required: true
 		},
 		{
