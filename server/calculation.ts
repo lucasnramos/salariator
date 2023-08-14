@@ -41,7 +41,7 @@ function clt({
   totalDescontos,
 }: FormData): SalarioCltMensal {
   const salarioBruto = parseFloat(salarioBrutoMensal);
-  const qtdeDependentes = parseInt(numDependentes);
+  const qtdeDependentes = parseInt(numDependentes) || 0;
   const fgts = calculeFgts(salarioBruto);
   const inss = calculeInss(salarioBruto);
   const irrf = calculeIrrf({ salarioBruto, qtdeDependentes });

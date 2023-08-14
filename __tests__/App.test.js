@@ -18,6 +18,11 @@ test("should show an asterix if input is required", () => {
   expect(screen.getByText("*")).toBeVisible();
 });
 
+test("should not show an asterix if input is required", () => {
+  render(<FormInput label="this is my label" />);
+  expect(screen.getByText("*")).toNotBeVisible();
+});
+
 test("should calculate yearly salary for CLT", () => {
   const formData = {
     salarioBrutoMensal: "8971.87",

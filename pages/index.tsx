@@ -1,25 +1,26 @@
-import Head from 'next/head'
-import { FormEvent, useReducer, useState } from 'react';
-import Form from '../components/Form'
-import Results from '../components/Results';
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import { FormEvent, useReducer, useState } from "react";
+import Form from "../components/Form";
+import Results from "../components/Results";
+import styles from "../styles/Home.module.css";
+import HookForm from "../components/HookForm";
 
 function getFormValue(eventTarget: HTMLInputElement[]) {
-  const formValue: { [x: string]: string } = {}
+  const formValue: { [x: string]: string } = {};
 
   for (let index = 0; index < eventTarget.length; index++) {
     const element: HTMLInputElement = eventTarget[index];
-    formValue[element.name] = element.value
+    formValue[element.name] = element.value;
   }
-  delete formValue.submit
-  return formValue
+  delete formValue.submit;
+  return formValue;
 }
 
 export default function Home() {
-  const [results, setResults] = useState<any>({})
+  const [results, setResults] = useState<any>({});
   const processSalaries = async (event: any) => {
-    event.preventDefault()
-    const formValue = getFormValue(event.target)
+    event.preventDefault();
+    const formValue = getFormValue(event.target);
     // fetch the results from /api/form via POST
     const res = await fetch("/api/form", {
       method: "POST",
@@ -27,11 +28,11 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-    })
-    const calculated = await res.json()
+    });
+    const calculated = await res.json();
     console.log("json()", calculated);
-    setResults(calculated)
-  }
+    setResults(calculated);
+  };
 
   return (
     <div className={styles.container}>
@@ -42,10 +43,8 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Salariator - Compare salários CLT e PJ
-        </h1>
-        <Form handleSubmit={processSalaries} />
+        <h1 className={styles.title}>Salariator - Compare salários CLT e PJ</h1>
+        <HookForm />
         <Results data={results} />
       </main>
 
@@ -59,5 +58,5 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  )
+  );
 }
