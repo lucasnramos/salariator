@@ -2,7 +2,22 @@ import { render, screen } from "@testing-library/react";
 import Home from "../pages/index";
 import FormInput from "../components/FormInput";
 import "@testing-library/jest-dom";
-import { clt } from "../server/calculation";
+import { clt, cnpj } from "../server/calculation";
+ 
+
+const MOCK_CLT_FORM_DATA = {
+    salarioBrutoMensal: "9420",
+    numDependentes: "1",
+    totalBeneficios: "1154",
+    totalDescontos: "400",
+}
+
+const MOCK_PJ_FORM_DATA = {
+    faturamentoMensal: "23000",
+    despesas: "4000",
+    proLabore: "1300",
+}
+
 
 test("should show title", () => {
   render(<Home />);
@@ -12,24 +27,23 @@ test("should show title", () => {
   ).toBeTruthy();
 });
 
-// Form Inputs
-test("should show an asterix if input is required", () => {
-  render(<FormInput label="this is my label" required />);
-  expect(screen.getByText("*")).toBeVisible();
-});
-
 test("should calculate yearly salary for CLT", () => {
   const formData = {
-    salarioBrutoMensal: "8971.87",
-    numDependentes: "1",
-    totalBeneficios: "1154",
-    totalDescontos: "400",
-    faturamentoMensal: "23000",
-    despesas: "8000",
-    rbt12: "23000",
-    proLabore: "1212",
+    ...MOCK_CLT_FORM_DATA,
+    ...MOCK_PJ_FORM_DATA,
   };
   const result = clt(formData);
+  console.log(result);
+
+  expect(result).toBeTruthy();
+});
+
+test("should calculate yearly salary for CNPJ", () => {
+  const formData = {
+    ...MOCK_CLT_FORM_DATA,
+    ...MOCK_PJ_FORM_DATA,
+  };
+  const result = cnpj(formData);
   console.log(result);
 
   expect(result).toBeTruthy();

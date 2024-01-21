@@ -31,8 +31,6 @@ type FormData = {
   totalDescontos: string;
   faturamentoMensal: string;
   despesas: string;
-  rbt12: string;
-  usarFatorR?: string;
   proLabore: string;
 };
 
@@ -43,7 +41,7 @@ function clt({
   totalDescontos,
 }: FormData): SalarioCltMensal {
   const salarioBruto = parseFloat(salarioBrutoMensal);
-  const qtdeDependentes = parseInt(numDependentes);
+  const qtdeDependentes = parseInt(numDependentes) || 0;
   const fgts = calculeFgts(salarioBruto);
   const inss = calculeInss(salarioBruto);
   const irrf = calculeIrrf({ salarioBruto, qtdeDependentes });
@@ -66,23 +64,23 @@ function clt({
 }
 
 function cnpj(formData: FormData): SimplesNacionalMensal {
-  console.log("formdata?", formData);
   const faturamentoMensal = parseFloat(formData.faturamentoMensal);
-  const rbt12 = parseFloat(formData.rbt12);
+  const rbt12 = faturamentoMensal * 12;
   const despesas = parseFloat(formData.despesas);
   const aliquotaEfetiva = calculeAliquotaSimples(rbt12);
   const das = calculeDasSimples(faturamentoMensal, aliquotaEfetiva);
+  const salarioProLabore = clt({
+    ...formData,
+    salarioBrutoMensal: "1420",
+    totalBeneficios: "0",
+    totalDescontos: "0",
+  });
 
   return {
     faturamentoMensal,
     aliquotaEfetiva,
     das,
-    proLabore: clt({
-      ...formData,
-      salarioBrutoMensal: formData.proLabore,
-      totalBeneficios: "0",
-      totalDescontos: "0"
-    }),
+    proLabore: salarioProLabore,
     receita: faturamentoMensal - das - despesas,
   } as SimplesNacionalMensal;
 }

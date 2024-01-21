@@ -1,37 +1,24 @@
-import Head from 'next/head'
-import { FormEvent, useReducer, useState } from 'react';
-import Form from '../components/Form'
-import Results from '../components/Results';
-import styles from '../styles/Home.module.css'
-
-function getFormValue(eventTarget: HTMLInputElement[]) {
-  const formValue: { [x: string]: string } = {}
-
-  for (let index = 0; index < eventTarget.length; index++) {
-    const element: HTMLInputElement = eventTarget[index];
-    formValue[element.name] = element.value
-  }
-  delete formValue.submit
-  return formValue
-}
+import Head from "next/head";
+import { FormEvent, useReducer, useState } from "react";
+import Form from "../components/Form";
+import Results from "../components/Results";
+import styles from "../styles/Home.module.css";
+import HookForm from "../components/HookForm";
 
 export default function Home() {
-  const [results, setResults] = useState<any>({})
+  const [results, setResults] = useState<any>({});
   const processSalaries = async (event: any) => {
-    event.preventDefault()
-    const formValue = getFormValue(event.target)
-    // fetch the results from /api/form via POST
+    console.log(event);
     const res = await fetch("/api/form", {
       method: "POST",
-      body: JSON.stringify(formValue),
+      body: JSON.stringify(event),
       headers: {
         "Content-Type": "application/json",
       },
-    })
-    const calculated = await res.json()
-    console.log("json()", calculated);
-    setResults(calculated)
-  }
+    });
+    const calculated = await res.json();
+    setResults(calculated);
+  };
 
   return (
     <div className={styles.container}>
@@ -42,10 +29,13 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Salariator - Compare salários CLT e PJ
-        </h1>
-        <Form handleSubmit={processSalaries} />
+        <h1 className={styles.title}>Salariator - Compare salários CLT e PJ</h1>
+        <p>Insira os dados de salário mensal CLT e seu faturamento mensal estimado.</p>
+        <p>Campos de benefícios e descontos consideram aqueles que não
+        tributáveis. Inclua a soma total em cada campo</p>
+        <div className="py-3"></div>
+        <HookForm fetchResults={processSalaries} />
+        <div className="py-5"></div>
         <Results data={results} />
       </main>
 
@@ -59,5 +49,5 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  )
+  );
 }
