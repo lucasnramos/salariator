@@ -8,6 +8,7 @@ interface FormInputProps {
 }
 
 function FormInput({ label, name, type = "text", required }: FormInputProps) {
+  console.log('FormInput', required);
   return (
     <div className="block mb-2">
       <label

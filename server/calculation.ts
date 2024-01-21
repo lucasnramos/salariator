@@ -64,7 +64,6 @@ function clt({
 }
 
 function cnpj(formData: FormData): SimplesNacionalMensal {
-  console.log("formdata?", formData);
   const faturamentoMensal = parseFloat(formData.faturamentoMensal);
   const rbt12 = faturamentoMensal * 12;
   const despesas = parseFloat(formData.despesas);
@@ -72,7 +71,7 @@ function cnpj(formData: FormData): SimplesNacionalMensal {
   const das = calculeDasSimples(faturamentoMensal, aliquotaEfetiva);
   const salarioProLabore = clt({
     ...formData,
-    salarioBrutoMensal: formData.proLabore,
+    salarioBrutoMensal: "1420",
     totalBeneficios: "0",
     totalDescontos: "0",
   });
