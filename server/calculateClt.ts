@@ -1,7 +1,5 @@
-export type SalarioBase = {
-  salarioBruto: number;
-  qtdeDependentes?: number;
-};
+import { SalarioBase } from "../models";
+
 function calculeSalarioBase({
   salarioBruto,
   qtdeDependentes = 0,
@@ -23,7 +21,7 @@ function calculeIrrf({ salarioBruto, qtdeDependentes }: SalarioBase): number {
   if (salarioBase > faixa1 && salarioBase <= faixa2) {
     return salarioBase * 0.075 - 158.4;
   } else if (salarioBase <= faixa3) {
-    return salarioBase * 0.15 - 370.40;
+    return salarioBase * 0.15 - 370.4;
   } else if (salarioBase <= faixa4) {
     return salarioBase * 0.225 - 651.73;
   } else if (salarioBase > faixa4) {

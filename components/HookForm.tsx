@@ -21,7 +21,7 @@ export default function HookForm({ fetchResults }: any) {
   return (
     <div className="flex">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="pb-3">Campos Pessoa Física</h2>
+        <h2 className="pb-3">Campos CLT</h2>
 
         <label
           htmlFor="salarioBrutoMensal"
@@ -103,4 +103,3 @@ export default function HookForm({ fetchResults }: any) {
     </div>
   );
 }
-

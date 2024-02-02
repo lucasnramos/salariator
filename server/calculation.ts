@@ -4,35 +4,7 @@ import {
   calculeAliquotaSimples,
   calculeDasSimples,
 } from "./calculateCnpj";
-
-export type SalarioCltMensal = {
-  salarioBruto: number;
-  fgts: number;
-  salarioBaseIrrf?: number;
-  inss: number;
-  irrf: number;
-  porcentagemInss: number;
-  porcentagemIrrf: number;
-  salarioLiquido: number;
-};
-
-export type SimplesNacionalMensal = {
-  faturamentoMensal: number;
-  aliquotaEfetiva: number;
-  das: number;
-  receita: number;
-  proLabore: SalarioCltMensal;
-};
-
-type FormData = {
-  salarioBrutoMensal: string;
-  numDependentes: string;
-  totalBeneficios: string;
-  totalDescontos: string;
-  faturamentoMensal: string;
-  despesas: string;
-  proLabore: string;
-};
+import { SalarioCltMensal, FormData, SimplesNacionalMensal } from "../models";
 
 function clt({
   salarioBrutoMensal,

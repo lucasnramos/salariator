@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { formatCurrency, formatPercent } from "../helpers/formatter";
-import {
-  SalarioCltMensal,
-  SimplesNacionalMensal,
-  cnpj,
-} from "../server/calculation";
+import { cnpj } from "../server/calculation";
+import { SalarioCltMensal, SimplesNacionalMensal } from "../models";
 
 type ResultsProps = {
   data: {
@@ -100,11 +97,11 @@ function Results({ data }: ResultsProps) {
               {formatCurrency(cnpjCalculado?.proLabore?.irrf)}
             </li>
             <li>
-              Porcentagem do INSS pago:{" "}
+              Alíquota do INSS:{" "}
               {formatPercent(cnpjCalculado?.proLabore?.porcentagemInss)}
             </li>
             <li>
-              Porcentagem do IRRF pago:{" "}
+              Alíquota do IRRF:{" "}
               {formatPercent(cnpjCalculado?.proLabore?.porcentagemIrrf)}
             </li>
             <li>

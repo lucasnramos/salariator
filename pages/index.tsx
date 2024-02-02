@@ -30,9 +30,15 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Salariator - Compare salários CLT e PJ</h1>
-        <p>Insira os dados de salário mensal CLT e seu faturamento mensal estimado.</p>
-        <p>Campos de benefícios e descontos consideram aqueles que não
-        tributáveis. Inclua a soma total em cada campo</p>
+        <p>
+          Insira os dados de salário mensal CLT e seu faturamento mensal
+          estimado.
+        </p>
+        <p>
+          Campos de benefícios e descontos consideram aqueles não tributáveis.
+          Inclua a soma total em cada campo.
+        </p>
+        <h2>Por padrão, será considerado o Anexo V Simples Nacional.</h2>
         <div className="py-3"></div>
         <HookForm fetchResults={processSalaries} />
         <div className="py-5"></div>
