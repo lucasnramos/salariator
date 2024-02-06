@@ -23,15 +23,17 @@ function clt({
     irrf +
     parseFloat(totalBeneficios) -
     parseFloat(totalDescontos);
+  const porcentagemInss = inss / salarioBruto;
+  const porcentagemIrrf = irrf / salarioBruto;
 
   return {
-    salarioBruto,
-    fgts,
-    inss,
-    irrf,
-    porcentagemInss: inss / salarioBruto,
-    porcentagemIrrf: irrf / salarioBruto,
-    salarioLiquido,
+    salarioBruto: +salarioBruto.toFixed(2),
+    fgts: +fgts.toFixed(2),
+    inss: +inss.toFixed(2),
+    irrf: +irrf.toFixed(2),
+    salarioLiquido: +salarioLiquido.toFixed(2),
+    porcentagemInss: +porcentagemInss.toFixed(2),
+    porcentagemIrrf: +porcentagemIrrf.toFixed(2),
   };
 }
 
@@ -49,18 +51,18 @@ function cnpj(formData: FormData): SimplesNacionalMensal {
   });
 
   return {
-    faturamentoMensal,
-    aliquotaEfetiva,
-    das,
+    faturamentoMensal: +faturamentoMensal.toFixed(2),
+    aliquotaEfetiva: +aliquotaEfetiva.toFixed(2),
+    das: +das.toFixed(2),
     proLabore: salarioProLabore,
-    receita: faturamentoMensal - das - despesas,
+    receita: +(faturamentoMensal - das - despesas).toFixed(2),
   } as SimplesNacionalMensal;
 }
 
 function cnpjAnual(simplesMensal: SimplesNacionalMensal) {
   const { faturamentoMensal, proLabore, receita } = simplesMensal;
   const faturamentoAnual = faturamentoMensal * 12;
-  const proLaboreAnual = proLabore.salarioLiquido * 12; // implement the clt anual function and use it here
+  const proLaboreAnual = proLabore.salarioLiquido * 12; // TODO: implement the clt anual function and use it here
   const receitaAnual = receita * 12;
 
   return {
