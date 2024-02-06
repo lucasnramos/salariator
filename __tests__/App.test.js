@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Home from "../pages/index";
-import { clt, cnpj } from "../server/calculation";
+import { clt, cnpj, cnpjAnual, cltAnual } from "../server/calculation";
 
 const MOCK_CLT_FORM_DATA = {
   salarioBrutoMensal: "9420",
@@ -50,4 +50,33 @@ test("should calculate monthly salary for CNPJ", () => {
   expect(result.aliquotaEfetiva).toBe(0.16);
   expect(result.das).toBe(3765);
   expect(result.receita).toBe(15235);
+});
+
+test("should calculate Yearly salary for CLT", () => {
+  const formData = {
+    ...MOCK_CLT_FORM_DATA,
+    ...MOCK_PJ_FORM_DATA,
+  };
+  const monthly = clt(formData);
+  const result = cltAnual(monthly);
+
+  expect(result).toBeTruthy();
+  expect(result.salarioAnual).toBe(113040);
+  expect(result.fgtsAnual).toBe(9043.2);
+  expect(result.adicionalFerias).toBe(3140);
+  expect(result.salarioLiquidoAnual).toBe(114385.04);
+});
+
+test("should calculate Yearly salary for CNPJ", () => {
+  const formData = {
+    ...MOCK_CLT_FORM_DATA,
+    ...MOCK_PJ_FORM_DATA,
+  };
+  const monthly = cnpj(formData);
+  const result = cnpjAnual(monthly);
+
+  expect(result).toBeTruthy();
+  expect(result.faturamentoAnual).toBe(276000);
+  expect(result.proLaboreAnual).toBe(15740.76);
+  expect(result.receitaAnual).toBe(182820);
 });
