@@ -57,4 +57,32 @@ function cnpj(formData: FormData): SimplesNacionalMensal {
   } as SimplesNacionalMensal;
 }
 
-export { clt, cnpj };
+function cnpjAnual(simplesMensal: SimplesNacionalMensal) {
+  const { faturamentoMensal, proLabore, receita } = simplesMensal;
+  const faturamentoAnual = faturamentoMensal * 12;
+  const proLaboreAnual = proLabore.salarioLiquido * 12; // implement the clt anual function and use it here
+  const receitaAnual = receita * 12;
+
+  return {
+    faturamentoAnual,
+    proLaboreAnual,
+    receitaAnual,
+  };
+}
+
+function cltAnual(salarioMensal: SalarioCltMensal) {
+  const { salarioBruto, fgts, salarioLiquido } = salarioMensal;
+  const salarioAnual = salarioBruto * 12;
+  const fgtsAnual = fgts * 12;
+  const adicionalFerias = salarioBruto / 3; // TODO: is this non-taxable?
+  const salarioLiquidoAnual = salarioLiquido * 13 + fgtsAnual + adicionalFerias;
+
+  return {
+    salarioAnual,
+    fgtsAnual,
+    adicionalFerias,
+    salarioLiquidoAnual,
+  };
+}
+
+export { clt, cnpj, cnpjAnual, cltAnual };

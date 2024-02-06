@@ -1,21 +1,52 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { formatCurrency, formatPercent } from "../helpers/formatter";
-import { cnpj } from "../server/calculation";
 import { SalarioCltMensal, SimplesNacionalMensal } from "../models";
 
 type ResultsProps = {
   data: {
     cltCalculado: SalarioCltMensal;
     cnpjCalculado: SimplesNacionalMensal;
+    cltAnualCalculado: any;
+    cnpjAnualCalculado: any;
   };
 };
 
 function Results({ data }: ResultsProps) {
-  const { cltCalculado, cnpjCalculado } = data;
+  const { cltCalculado, cnpjCalculado, cltAnualCalculado, cnpjAnualCalculado } =
+    data;
   const [isLoading, setIsLoading] = useState(true);
   const [bigger, setBigger] = useState<number | null>();
   const [biggerName, setBiggerName] = useState<string>();
+  const [biggerYear, setBiggerYear] = useState<number | null>();
+  const [biggerNameYear, setBiggerNameYear] = useState<string>();
 
+  // Calculate YEARLY difference
+  useEffect(() => {
+    let isMounted = true;
+    let bigger = 0;
+
+    if (isMounted && !!cltAnualCalculado && !!cnpjAnualCalculado) {
+      setIsLoading(false);
+      bigger =
+        100 *
+        Math.abs(
+          (cltAnualCalculado?.salarioLiquidoAnual - cnpjAnualCalculado?.receitaAnual) /
+            ((cltAnualCalculado?.salarioLiquidoAnual  + cnpjAnualCalculado?.receitaAnual) / 2)
+        );
+      setBiggerYear(bigger);
+      if (cltAnualCalculado?.salarioLiquidoAnual > cnpjAnualCalculado?.receitaAnual) {
+        setBiggerNameYear("CLT");
+      } else {
+        setBiggerNameYear("CNPJ");
+      }
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [cltAnualCalculado, cnpjAnualCalculado]);
+
+  // Calculate MONTHLY difference
   useEffect(() => {
     let isMounted = true;
     let bigger = 0;
@@ -29,7 +60,6 @@ function Results({ data }: ResultsProps) {
             ((cltCalculado.salarioLiquido + cnpjCalculado.receita) / 2)
         );
       setBigger(bigger);
-      // need to know which is bigger to set the message
       if (cltCalculado.salarioLiquido > cnpjCalculado.receita) {
         setBiggerName("CLT");
       } else {
@@ -40,7 +70,7 @@ function Results({ data }: ResultsProps) {
     return () => {
       isMounted = false;
     };
-  }, [data]);
+  }, [cltCalculado, cnpjCalculado, cltAnualCalculado, cnpjAnualCalculado]);
 
   if (isLoading) {
     return null;
@@ -48,7 +78,7 @@ function Results({ data }: ResultsProps) {
 
   return (
     <div className="wrapper">
-      <div className="flex">
+      <div className="flex" id="monthly-results">
         <div className="flex-grow mr-4">
           <h2>Estimativa Salário CLT</h2>
           <p>Salário bruto: {formatCurrency(cltCalculado?.salarioBruto)}</p>
@@ -114,7 +144,26 @@ function Results({ data }: ResultsProps) {
           <p>Receita líquida: {formatCurrency(cnpjCalculado?.receita)}</p>
         </div>
       </div>
-      <p>{`Salário ${biggerName} é ${bigger?.toFixed(
+        <p>{`Salário Mensal ${biggerName} é ${bigger?.toFixed(
+            2
+            )}% maior. Considerando valores líquidos`}</p>
+
+      <div className="flex" id="yearly-results">
+        <div className="flex-grow mr-4">
+          <h2>Estimativa Anual CLT</h2>
+          <p>
+            Salário Líquido anual:{" "}
+            {formatCurrency(cltAnualCalculado?.salarioLiquidoAnual)}
+          </p>
+        </div>
+        <div className="ml-4">
+          <h2>Estimativa Anual CNPJ</h2>
+          <p>
+            Receita líquida: {formatCurrency(cnpjAnualCalculado?.receitaAnual)}
+          </p>
+        </div>
+      </div>
+      <p>{`Salário anual ${biggerNameYear} é ${biggerYear?.toFixed(
         2
       )}% maior. Considerando valores líquidos`}</p>
     </div>
