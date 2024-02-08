@@ -7,7 +7,7 @@ const MOCK_CLT_FORM_DATA = {
   salarioBrutoMensal: "9420",
   numDependentes: "1",
   totalBeneficios: "1154",
-  totalDescontos: "400",
+  totalDescontos: "730",
 };
 
 const MOCK_PJ_FORM_DATA = {
@@ -33,8 +33,9 @@ test("should calculate monthly salary for CLT", () => {
 
   expect(result).toBeTruthy();
   expect(result.fgts).toBe(753.6);
+  expect(result.irrf).toBe(1392.43);
   expect(result.inss).toBe(908.85);
-  expect(result.salarioLiquido).toBe(7861.68);
+  expect(result.salarioLiquido).toBe(7542.72);
   expect(result.porcentagemInss).toBe(0.1);
   expect(result.porcentagemIrrf).toBe(0.15);
 });
@@ -59,12 +60,13 @@ test("should calculate Yearly salary for CLT", () => {
   };
   const monthly = clt(formData);
   const result = cltAnual(monthly);
+  console.log(result);
 
   expect(result).toBeTruthy();
   expect(result.salarioAnual).toBe(113040);
   expect(result.fgtsAnual).toBe(9043.2);
   expect(result.adicionalFerias).toBe(3140);
-  expect(result.salarioLiquidoAnual).toBe(114385.04);
+  expect(result.salarioLiquidoAnual).toBe(110238.56);
 });
 
 test("should calculate Yearly salary for CNPJ", () => {
