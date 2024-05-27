@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { FormEvent, useReducer, useState } from "react";
-import Form from "../components/Form";
 import Results from "../components/Results";
 import styles from "../styles/Home.module.css";
 import HookForm from "../components/HookForm";

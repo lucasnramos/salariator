@@ -1,6 +1,4 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import FormInput from "./FormInput";
-import { ChangeEvent, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
   salarioBrutoMensal: number;
