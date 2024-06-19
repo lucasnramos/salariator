@@ -11,21 +11,19 @@ function calculeSalarioBase({
 
 function calculeIrrf({ salarioBruto, qtdeDependentes }: SalarioBase): number {
   const salarioBase = calculeSalarioBase({ salarioBruto, qtdeDependentes });
-  const faixa1 = 2112;
-  const faixa2 = 2826.65;
+  const faixa1 = 2259.2;
+  const faixa2 = 2828.65;
   const faixa3 = 3751.05;
   const faixa4 = 4664.68;
 
-  if (salarioBruto < faixa1) return 0;
-
   if (salarioBase > faixa1 && salarioBase <= faixa2) {
-    return salarioBase * 0.075 - 158.4;
+    return salarioBase * 0.075 - 169.44;
   } else if (salarioBase <= faixa3) {
-    return salarioBase * 0.15 - 370.4;
+    return salarioBase * 0.15 - 381.44;
   } else if (salarioBase <= faixa4) {
-    return salarioBase * 0.225 - 651.73;
+    return salarioBase * 0.225 - 662.77;
   } else if (salarioBase > faixa4) {
-    return salarioBase * 0.275 - 884.96;
+    return salarioBase * 0.275 - 896;
   } else {
     return 0;
   }
